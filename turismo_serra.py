@@ -16,18 +16,9 @@ default_args = {
 
 docker_network = os.getenv("DOCKER_NETWORK")
 
-# Variáveis de ambiente repassadas para todos os containers
-minio_env = {
-    "MINIO_ENDPOINT":   os.getenv("MINIO_ENDPOINT",   "minio:9000"),
-    "MINIO_ACCESS_KEY": os.getenv("MINIO_ACCESS_KEY", "minioadmin"),
-    "MINIO_SECRET_KEY": os.getenv("MINIO_SECRET_KEY", "minioadmin"),
-    "MINIO_BUCKET":     os.getenv("MINIO_BUCKET",     "airflow"),
-    "MINIO_USE_SSL":    os.getenv("MINIO_USE_SSL",    "false"),
-}
-
 with DAG(
     dag_id="turismo_serra",
-    schedule=None,
+    schedule='@daily',
     catchup=False,
     default_args=default_args,
     tags=["turismo", "serra", "iss"],
