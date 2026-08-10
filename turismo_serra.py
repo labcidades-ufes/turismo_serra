@@ -33,7 +33,6 @@ with DAG(
         docker_url="unix://var/run/docker.sock",
         network_mode=docker_network,
         mount_tmp_dir=False,
-        environment=minio_env,
     )
 
     # 2. Fase Silver: Limpeza e Tipagem
@@ -45,7 +44,6 @@ with DAG(
         docker_url="unix://var/run/docker.sock",
         network_mode=docker_network,
         mount_tmp_dir=False,
-        environment=minio_env,
     )
 
     # 3. Fase Gold: Indicadores Econômicos
@@ -57,7 +55,6 @@ with DAG(
         docker_url="unix://var/run/docker.sock",
         network_mode=docker_network,
         mount_tmp_dir=False,
-        environment=minio_env,
     )
 
     coleta >> pre_processamento >> processamento
