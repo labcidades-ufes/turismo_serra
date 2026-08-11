@@ -3,18 +3,25 @@
 ARG BASE_IMAGE=utils-r_duckdb:4.6.1-1
 FROM ${BASE_IMAGE}
 
-# 2. Instala os pacotes R necessários para o Google Drive
+# 2. Runtime da libuv: o googledrive depende de fs (>= 2.0), que linka contra a
+# libuv do sistema em vez de embutir a própria. Sem isso o fs.so não carrega.
+# No Ubuntu noble o pacote é libuv1t64 (renomeado na transição do time_t).
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libuv1t64 \
+    && rm -rf /var/lib/apt/lists/*
+
+# 3. Instala os pacotes R necessários para o Google Drive
 RUN R -q -e "pkgs <- c('googledrive', 'dplyr', 'httr'); \
              install.packages(pkgs); \
              stopifnot(all(pkgs %in% rownames(installed.packages())))"
 
-# 3. Define onde o trabalho acontece
+# 4. Define onde o trabalho acontece
 WORKDIR /app
 
-# 4. Copia os arquivos necessários
+# 5. Copia os arquivos necessários
 # Atenção: O build deve ser rodado da RAIZ do projeto
 COPY dags/utils/utils.R .
 COPY dags/turismo_serra/coleta/coleta_turismo_serra.R .
 
-# 5. Execução
+# 6. Execução
 CMD ["Rscript", "coleta_turismo_serra.R"]
