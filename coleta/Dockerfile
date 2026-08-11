@@ -20,7 +20,6 @@ WORKDIR /app
 
 # 5. Copia os arquivos necessários
 # Atenção: O build deve ser rodado da RAIZ do projeto
-COPY dags/utils/utils.R .
 COPY dags/turismo_serra/coleta/coleta_turismo_serra.R .
 
 # 6. Execução

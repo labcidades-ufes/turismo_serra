@@ -8,7 +8,6 @@ RUN R -q -e "pkgs <- c('dplyr', 'stringr', 'lubridate', 'stringi', 'tidyr', 'str
 
 WORKDIR /app
 
-COPY dags/utils/utils.R .
 COPY dags/turismo_serra/pre_processamento/pre_processamento_turismo_serra.R .
 
 CMD ["Rscript", "pre_processamento_turismo_serra.R"]
